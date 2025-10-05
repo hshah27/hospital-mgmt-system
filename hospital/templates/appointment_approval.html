@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Appointment - Hospital Management{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{% url 'receptionist_dashboard' %}">← Back to Dashboard</a>
+</div>
+
+<h1>Review Appointment Request</h1>
+
+<div class="card" style="margin-bottom: 2rem;">
+    <h2>Appointment Details</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #374151;">Patient:</strong>
+                <div style="color: #6b7280;">{{ appointment.patient.name }}</div>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #374151;">Requested Doctor:</strong>
+                <div style="color: #2563eb;">Dr. {{ appointment.doctor.name }}</div>
+                {% if appointment.doctor.specialty %}
+                <div style="color: #6b7280; font-size: 0.875rem;">{{ appointment.doctor.specialty }}</div>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #374151;">Requested Date & Time:</strong>
+                <div style="color: #6b7280;">{{ appointment.requested_date|date:"M d, Y" }} at {{
+                    appointment.requested_date|time:"g:i A" }}</div>
+            </div>
+        </div>
+
+        <div>
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #374151;">Symptoms/Reason:</strong>
+                <div style="color: #6b7280;">{{ appointment.symptoms }}</div>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #374151;">Status:</strong>
+                <span
+                    style="background: #fef3c7; color: #92400e; padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">
+                    {{ appointment.get_status_display }}
+                </span>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: #374151;">Submitted:</strong>
+                <div style="color: #6b7280;">{{ appointment.created_at|date:"M d, Y" }} at {{
+                    appointment.created_at|time:"g:i A" }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Approval Decision</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+            {{ form.status }}
+            {% if form.status.errors %}
+            <div style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.status.errors.0 }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.receptionist_notes.id_for_label }}">{{ form.receptionist_notes.label }}</label>
+            {{ form.receptionist_notes }}
+            {% if form.receptionist_notes.errors %}
+            <div style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.receptionist_notes.errors.0 }}
+            </div>
+            {% endif %}
+            <div style="color: #6b7280; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.receptionist_notes.help_text }}
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn">Submit Decision</button>
+            <a href="{% url 'receptionist_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

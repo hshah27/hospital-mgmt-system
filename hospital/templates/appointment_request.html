@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Appointment - Hospital Management{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{% url 'patient_dashboard' %}">← Back to Dashboard</a>
+</div>
+
+<h1>Request an Appointment</h1>
+
+<div class="card">
+    <p style="color: #6b7280; margin-bottom: 2rem;">
+        Please fill out the form below to request an appointment. Your request will be reviewed by our receptionist and
+        approved if appropriate.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.doctor.id_for_label }}">{{ form.doctor.label }}</label>
+            {{ form.doctor }}
+            {% if form.doctor.errors %}
+            <div style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.doctor.errors.0 }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.requested_date.id_for_label }}">{{ form.requested_date.label }}</label>
+            {{ form.requested_date }}
+            {% if form.requested_date.errors %}
+            <div style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.requested_date.errors.0 }}
+            </div>
+            {% endif %}
+            <div style="color: #6b7280; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.requested_date.help_text }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.symptoms.id_for_label }}">{{ form.symptoms.label }}</label>
+            {{ form.symptoms }}
+            {% if form.symptoms.errors %}
+            <div style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.symptoms.errors.0 }}
+            </div>
+            {% endif %}
+            <div style="color: #6b7280; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ form.symptoms.help_text }}
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn">Submit Appointment Request</button>
+            <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

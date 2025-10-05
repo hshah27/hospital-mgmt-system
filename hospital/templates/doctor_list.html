@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctors - Hospital Management{% endblock %}
+
+{% block content %}
+<h1>Doctors</h1>
+
+<div class="actions">
+    <a href="{% url 'doctor_create' %}" class="btn">Add New Doctor</a>
+</div>
+
+{% if doctors %}
+<ul class="list">
+    {% for doctor in doctors %}
+    <li class="list-item">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
+                    {{ doctor.name }}
+                </div>
+                {% if doctor.specialty %}
+                <div style="color: #2563eb; font-size: 0.875rem; margin-bottom: 0.25rem;">
+                    {{ doctor.specialty }}
+                </div>
+                {% endif %}
+                <div style="color: #6b7280; font-size: 0.875rem;">
+                    {% if doctor.phone %}Phone: {{ doctor.phone }}{% endif %}
+                    {% if doctor.email %} • Email: {{ doctor.email }}{% endif %}
+                </div>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">👨‍⚕️</div>
+    <h2>No doctors registered yet</h2>
+    <p>Get started by adding your first doctor to the system.</p>
+    <a href="{% url 'doctor_create' %}" class="btn">Add First Doctor</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Hospital Management{% endblock %}
+
+{% block content %}
+<h1>Welcome to MedCare</h1>
+<p>Streamlined hospital management for modern healthcare.</p>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ doctors_count }}</div>
+        <div class="stat-label">Doctors</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ patients_count }}</div>
+        <div class="stat-label">Patients</div>
+    </div>
+</div>
+
+{% if not user.is_authenticated %}
+<div class="card">
+    <h2>Login to Your Account</h2>
+    <p style="color: #6b7280; margin-bottom: 1.5rem;">Access your personalized dashboard</p>
+    <div class="actions">
+        <a href="{% url 'login' %}" class="btn">Login</a>
+    </div>
+</div>
+{% endif %}
+
+<div class="card">
+    <h2>Quick Actions</h2>
+    <div class="actions">
+        <a href="{% url 'doctor_create' %}" class="btn">Add New Doctor</a>
+        <a href="{% url 'patient_create' %}" class="btn">Add New Patient</a>
+        <a href="{% url 'doctor_list' %}" class="btn btn-secondary">View All Doctors</a>
+        <a href="{% url 'patient_list' %}" class="btn btn-secondary">View All Patients</a>
+    </div>
+</div>
+{% endblock %}

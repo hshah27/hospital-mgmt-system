@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Receptionist Dashboard - Hospital Management{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>Receptionist Dashboard</h1>
+        <p style="color: #6b7280;">Manage appointment requests</p>
+    </div>
+    <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ pending_appointments.count }}</div>
+        <div class="stat-label">Pending Requests</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ approved_appointments.count }}</div>
+        <div class="stat-label">Approved Appointments</div>
+    </div>
+</div>
+
+{% if pending_appointments %}
+<div class="card">
+    <h2>Pending Appointment Requests</h2>
+    <ul class="list">
+        {% for appointment in pending_appointments %}
+        <li class="list-item">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">
+                        {{ appointment.patient.name }}
+                        <span
+                            style="background: #fef3c7; color: #92400e; padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">
+                            {{ appointment.get_status_display }}
+                        </span>
+                    </div>
+                    <div style="color: #2563eb; margin-bottom: 0.25rem;">
+                        Requested: Dr. {{ appointment.doctor.name }} ({{ appointment.doctor.specialty }})
+                    </div>
+                    <div style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">
+                        📅 {{ appointment.requested_date|date:"M d, Y" }} at {{ appointment.requested_date|time:"g:i A"
+                        }}
+                    </div>
+                    <div style="color: #6b7280; font-size: 0.875rem;">
+                        📝 {{ appointment.symptoms|truncatechars:100 }}
+                    </div>
+                </div>
+                <div style="margin-left: 1rem;">
+                    <a href="{% url 'approve_appointment' appointment.id %}" class="btn"
+                        style="margin-bottom: 0.5rem;">Review</a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if approved_appointments %}
+<div class="card">
+    <h2>Approved Appointments</h2>
+    <ul class="list">
+        {% for appointment in approved_appointments %}
+        <li class="list-item">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">
+                        {{ appointment.patient.name }}
+                        <span
+                            style="background: #d1fae5; color: #065f46; padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">
+                            {{ appointment.get_status_display }}
+                        </span>
+                    </div>
+                    <div style="color: #2563eb; margin-bottom: 0.25rem;">
+                        Dr. {{ appointment.doctor.name }} ({{ appointment.doctor.specialty }})
+                    </div>
+                    <div style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">
+                        📅 {{ appointment.requested_date|date:"M d, Y" }} at {{ appointment.requested_date|time:"g:i A"
+                        }}
+                    </div>
+                    {% if appointment.receptionist_notes %}
+                    <div style="color: #6b7280; font-size: 0.875rem;">
+                        📝 {{ appointment.receptionist_notes }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if not pending_appointments and not approved_appointments %}
+<div class="empty-state">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+    <h2>No appointment requests</h2>
+    <p>All appointment requests are currently processed.</p>
+</div>
+{% endif %}
+{% endblock %}

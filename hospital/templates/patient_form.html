@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Patient - Hospital Management{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{% url 'patient_list' %}">← Back to Patients</a>
+</div>
+
+<h1>Add New Patient</h1>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {{ form.name }}
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="{{ form.age.id_for_label }}">{{ form.age.label }}</label>
+                {{ form.age }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
+                {{ form.gender }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+            {{ form.phone }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+            {{ form.address }}
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="{{ form.admitted_date.id_for_label }}">{{ form.admitted_date.label }}</label>
+                {{ form.admitted_date }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.doctor.id_for_label }}">{{ form.doctor.label }}</label>
+                {{ form.doctor }}
+            </div>
+        </div>
+
+        <h3>Account (optional)</h3>
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+            <div style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">{{ form.username.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password</label>
+                {{ form.password1 }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                <div style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem;">{{ form.password2.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn">Save Patient</button>
+            <a href="{% url 'patient_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

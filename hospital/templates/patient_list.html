@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Patients - Hospital Management{% endblock %}
+
+{% block content %}
+<h1>Patients</h1>
+
+<div class="actions">
+    <a href="{% url 'patient_create' %}" class="btn">Add New Patient</a>
+</div>
+
+{% if patients %}
+<ul class="list">
+    {% for patient in patients %}
+    <li class="list-item">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
+                    {{ patient.name }}
+                    {% if patient.age %}
+                    <span style="color: #6b7280; font-weight: 400;">({{ patient.age }} years old)</span>
+                    {% endif %}
+                </div>
+                <div style="color: #6b7280; font-size: 0.875rem;">
+                    {% if patient.doctor %}
+                    Assigned to: <span style="color: #2563eb;">Dr. {{ patient.doctor.name }}</span>
+                    {% else %}
+                    No doctor assigned
+                    {% endif %}
+                    {% if patient.admitted_date %} • Admitted: {{ patient.admitted_date }}{% endif %}
+                </div>
+                {% if patient.phone %}
+                <div style="color: #6b7280; font-size: 0.875rem;">
+                    Phone: {{ patient.phone }}
+                </div>
+                {% endif %}
+            </div>
+            {% if patient.gender %}
+            <div
+                style="background: #f3f4f6; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; color: #374151;">
+                {{ patient.get_gender_display }}
+            </div>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">🏥</div>
+    <h2>No patients registered yet</h2>
+    <p>Start by registering your first patient in the system.</p>
+    <a href="{% url 'patient_create' %}" class="btn">Add First Patient</a>
+</div>
+{% endif %}
+{% endblock %}

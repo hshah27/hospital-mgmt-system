@@ -1,0 +1,96 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+*.egg-info
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.Python
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*,cover
+
+# mypy
+.mypy_cache/
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+# keep migrations in repo - do NOT ignore */migrations/
+
+# Environment variables
+.env
+.env.*
+.venv/
+
+# PyCharm
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Windows
+Desktop.ini
+$RECYCLE.BIN/
+
+# Distribution / packaging
+*.egg
+*.egg-info
+dist/
+build/
+
+# Misc
+*.log
+*.pot
+*.mo
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+
+# Secrets (if you accidentally have a secrets file)
+secrets.json
+
+# End of file

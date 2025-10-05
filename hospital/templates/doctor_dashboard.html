@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor Dashboard - Hospital Management{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>Welcome, Dr. {{ doctor.name }}</h1>
+        <p style="color: #6b7280;">{{ doctor.specialty }}</p>
+    </div>
+    <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ patient_count }}</div>
+        <div class="stat-label">Your Patients</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ doctor.specialty|default:"General" }}</div>
+        <div class="stat-label">Specialty</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Your Patients</h2>
+    {% if patients %}
+    <ul class="list">
+        {% for patient in patients %}
+        <li class="list-item">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
+                        {{ patient.name }}
+                        {% if patient.age %}
+                        <span style="color: #6b7280; font-weight: 400;">({{ patient.age }} years old)</span>
+                        {% endif %}
+                    </div>
+                    <div style="color: #6b7280; font-size: 0.875rem;">
+                        {% if patient.admitted_date %}Admitted: {{ patient.admitted_date }}{% endif %}
+                        {% if patient.phone %} • Phone: {{ patient.phone }}{% endif %}
+                    </div>
+                    {% if patient.address %}
+                    <div style="color: #6b7280; font-size: 0.875rem;">
+                        Address: {{ patient.address }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% if patient.gender %}
+                <div
+                    style="background: #f3f4f6; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; color: #374151;">
+                    {{ patient.get_gender_display }}
+                </div>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty-state">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+        <h3>No patients assigned yet</h3>
+        <p>Patients will appear here when they are assigned to your care.</p>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Quick Actions</h2>
+    <div class="actions">
+        <a href="{% url 'patient_list' %}" class="btn btn-secondary">View All Patients</a>
+        <a href="{% url 'doctor_list' %}" class="btn btn-secondary">View All Doctors</a>
+    </div>
+</div>
+
+{% if approved_appointments %}
+<div class="card">
+    <h2>Approved Appointments ({{ approved_appointments.count }})</h2>
+    <ul class="list">
+        {% for appointment in approved_appointments %}
+        <li class="list-item">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div style="font-weight:600; color:#1f2937; margin-bottom:0.25rem;">
+                        {{ appointment.patient.name }}
+                        <span style="color:#6b7280; font-weight:400;">• {{ appointment.patient.phone }}</span>
+                    </div>
+                    <div style="color:#6b7280; font-size:0.875rem; margin-bottom:0.25rem;">
+                        📅 {{ appointment.requested_date|date:"M d, Y" }} at {{ appointment.requested_date|time:'g:i A'
+                        }}
+                    </div>
+                    <div style="color:#6b7280; font-size:0.875rem; margin-bottom:0.25rem;">
+                        📝 {{ appointment.symptoms|truncatechars:120 }}
+                    </div>
+                    {% if appointment.receptionist_notes %}
+                    <div style="color:#6b7280; font-size:0.875rem;">
+                        💬 {{ appointment.receptionist_notes }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div style="margin-left:1rem; text-align:right;">
+                    <div style="font-size:0.875rem; color:#065f46; font-weight:600;">{{ appointment.get_status_display
+                        }}</div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
